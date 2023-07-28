@@ -8,6 +8,7 @@ import { Box, Badge } from '@mui/material'; // Import Badge component
 import Avatar from '@mui/material/Avatar'; // Import Avatar component
 import colors from '../../colors';
 import mockDataConversations from "../../data/MockDataConversations";
+import ContactAvatar from "../../utilities/ContactAvatar";
 
 const stringAvatar = (name) => {
     return {
@@ -15,13 +16,14 @@ const stringAvatar = (name) => {
     };
 };
 
-const Sidebar = () => {
+const Sidebar = ({ onContactClick }) => {
     const [selectedConversationId, setSelectedConversationId] = useState(null);
 
     const handleContactClick = (conversationId) => {
         setSelectedConversationId(conversationId);
-        console.log(`Selected conversation ID: ${conversationId}`);
+        onContactClick(conversationId);
     };
+
 
     const renderContacts = () => {
         return mockDataConversations.contatos.map((contact, index) => (
@@ -43,15 +45,11 @@ const Sidebar = () => {
                 onClick={() => handleContactClick(contact.conversationId)}
             >
                 {/* Use Avatar component for contact image or fallback to contact name */}
-                {contact.avatar ? (
-                    <Avatar src={contact.avatar} alt={contact.name} />
-                ) : (
-                    <Avatar {...stringAvatar(contact.name)} />
-                )}
+                {<ContactAvatar contact={contact} />}
                 <Box sx={{ marginLeft: 2 }}>
                     <div style={{ fontWeight: 'bold' }}>{contact.name}</div>
                     <div style={{ color: colors.white2[600] }}>
-                        {contact['last message']}
+                        {contact['last message'].substring(0,15) + '...'}
                     </div>
                 </Box>
                 {/* Wrap last message date and Badge in a Box */}
@@ -72,7 +70,7 @@ const Sidebar = () => {
 
     return (
         <Box>
-            <ProSidebar width={400}>
+            <ProSidebar width={0.01}>
                 <Menu>
                     {/* Topo do Sidebar */}
                     <MenuItem>
@@ -108,7 +106,7 @@ const Sidebar = () => {
                         </Box>
                     </MenuItem>
                     {/* Wrap renderContacts() in a Box with overflowY set to auto and a height of 100vh */}
-                    <Box sx={{ overflowY: 'auto', height: '92vh' }}>
+                    <Box sx={{ overflowY: 'auto', height: '93vh' }}>
                         {renderContacts()}
                     </Box>
                 </Menu>

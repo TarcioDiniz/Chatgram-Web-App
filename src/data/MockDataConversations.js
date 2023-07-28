@@ -1,8 +1,26 @@
 const mockDataConversations = () => {
     const generateRandomBoolean = () => Math.random() < 0.5;
     const generateRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const generateRandomDate = () => {
+        const year = 2023;
+        const month = generateRandomInt(1, 12);
+        const day = generateRandomInt(1, 28);
+        const hour = generateRandomInt(0, 23);
+        const minute = generateRandomInt(0, 59);
+        const second = generateRandomInt(0, 59);
+        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+    };
 
-    // Simple hash function
+    const generateRandomMessage = () => {
+        const messageLength = generateRandomInt(5, 100);
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let message = '';
+        for (let i = 0; i < messageLength; i++) {
+            message += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return message;
+    };
+
     const hashCode = (str) => {
         let hash = 0;
         if (str.length === 0) return hash;
@@ -14,52 +32,24 @@ const mockDataConversations = () => {
         return hash;
     };
 
-    const contacts = [
-        {
-            "conversationId": hashCode("João Silva"),
-            "name": "João Silva",
-            "last message": "Olá, tudo bem?",
-            "last message date": "2023-07-27 10:30:00",
-            "avatar": null,
-            "hasViewedConversation": generateRandomBoolean(),
-            "unseenMessages": generateRandomInt(0, 10)
-        },
-        {
-            "conversationId": hashCode("Maria Oliveira"),
-            "name": "Maria Oliveira",
-            "last message": "Estou a caminho!",
-            "last message date": "2023-07-26 15:20:00",
-            "avatar": null,
-            "hasViewedConversation": generateRandomBoolean(),
-            "unseenMessages": generateRandomInt(0, 10)
-        },
-        // Add more contacts with their respective random fields...
-        {
-            "conversationId": hashCode("Gabriel Lima"),
-            "name": "Gabriel Lima",
-            "last message": "Ótima ideia!",
-            "last message date": "2023-07-18 22:50:00",
-            "avatar": null,
-            "hasViewedConversation": generateRandomBoolean(),
-            "unseenMessages": generateRandomInt(0, 10)
-        }
-    ];
+    const contacts = [];
 
-    // Generate more random contacts to reach a total of 10
-    while (contacts.length < 10) {
-        const randomName = `Contact ${contacts.length + 1}`;
+    // Generate random contacts
+    for (let i = 0; i < 50; i++) {
+        const name = `Contact ${i + 1}`;
         contacts.push({
-            "conversationId": hashCode(randomName),
-            "name": randomName,
-            "last message": "Random message",
-            "last message date": "2023-07-27 12:00:00",
+            "conversationId": hashCode(name),
+            "name": name,
+            "last message": generateRandomMessage(),
+            "last message date": generateRandomDate(),
             "avatar": null,
             "hasViewedConversation": generateRandomBoolean(),
-            "unseenMessages": generateRandomInt(0, 10)
+            "unseenMessages": generateRandomInt(0, 10),
+            "status": generateRandomBoolean() ? "online" : "offline"
         });
     }
 
-    return { "contatos": contacts };
+    return {"contatos": contacts};
 };
 
 export default mockDataConversations();

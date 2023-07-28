@@ -3,8 +3,13 @@ import {SearchOutlined} from "@mui/icons-material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PhoneIcon from '@mui/icons-material/Phone';
 import colors from "../../colors";
+import ContactAvatar from "../../utilities/ContactAvatar";
 
-const Topbar = ({name, message, avatar}) => {
+const Topbar = ({name, message, avatar, selectedContact}) => {
+    if (!selectedContact) {
+        return null;
+    }
+
     return (
         <Box
             display="flex"
@@ -19,10 +24,7 @@ const Topbar = ({name, message, avatar}) => {
             {/* Left side */}
             <Box display="flex" alignItems="center" sx={{marginLeft: 2}}>
                 {/* Circular Avatar */}
-                <Avatar
-                    alt={name}
-                    src={avatar}
-                />
+                {selectedContact && <ContactAvatar contact={selectedContact}/>}
                 <Box sx={{marginLeft: 2}}>
                     {/* Name */}
                     <Typography sx={{
@@ -59,3 +61,4 @@ const Topbar = ({name, message, avatar}) => {
 }
 
 export default Topbar;
+
