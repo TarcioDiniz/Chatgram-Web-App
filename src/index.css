@@ -43,7 +43,6 @@ html, body, #root, .app, .content {
     overflow-y: auto;
 }
 
-/* Estilos para o SideBar */
-.sidebar {
-    overflow-y: auto;
+.css-1t8x7v1 >.ps-menu-button:hover {
+    background-color: transparent !important;
 }
