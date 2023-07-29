@@ -5,8 +5,9 @@ import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import Picker from "@emoji-mart/react";
 import default_background from "../../assets/background/default-background-black.png";
 import applyBackgroundOpacity from "../../utilities/applyBackgroundOpacity";
+import ChatRenderer from "./ChatRenderer";
 
-const Chat = () => {
+const Chat = ({ conversations }) => { // Destructure the 'conversations' prop correctly
     const [message, setMessage] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const textFieldRef = useRef(null);
@@ -56,6 +57,12 @@ const Chat = () => {
                     style={{ marginBottom: 16 }}
                 />
             )}
+            <Box sx={{
+                height: "92%",
+                width: "100%"
+            }}>
+                <ChatRenderer conversations={conversations}/> {/* Pass the conversations prop correctly */}
+            </Box>
             <Box
                 sx={{
                     display: "flex",

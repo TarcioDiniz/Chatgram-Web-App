@@ -59,7 +59,7 @@ function App() {
                                     selectedContact={selectedContact}
                                 />
                                 <div className="chat-container" style={{ flexGrow: 1 }}>
-                                    <Chat />
+                                    <Chat conversations={selectedContact.conversation} />
                                 </div>
                             </div>
                         ) : <SideBar onContactClick={handleContactClick} />
@@ -75,7 +75,7 @@ function App() {
                                 <div className="chat-container" style={{ flexGrow: 1 }}>
                                     <Routes>
                                         {selectedContact ? (
-                                            <Route path="/" element={<Chat />} />
+                                            <Route path="/" element={<Chat conversations={selectedContact.conversation} />} />
                                         ) : (
                                             <Route path="/" element={<Home />} />
                                         )}
