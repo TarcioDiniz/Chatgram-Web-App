@@ -1,4 +1,4 @@
-import {Box, IconButton, Typography, Avatar} from "@mui/material";
+import {Box, IconButton, Typography} from "@mui/material";
 import {SearchOutlined} from "@mui/icons-material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -61,4 +61,3 @@ const Topbar = ({name, message, avatar, selectedContact}) => {
 }
 
 export default Topbar;
-

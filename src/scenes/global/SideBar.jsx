@@ -5,16 +5,9 @@ import IconButton from '@mui/material/IconButton';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { SearchOutlined } from '@mui/icons-material';
 import { Box, Badge } from '@mui/material'; // Import Badge component
-import Avatar from '@mui/material/Avatar'; // Import Avatar component
 import colors from '../../colors';
 import mockDataConversations from "../../data/MockDataConversations";
 import ContactAvatar from "../../utilities/ContactAvatar";
-
-const stringAvatar = (name) => {
-    return {
-        children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`, // Use first letters of first and last names
-    };
-};
 
 const Sidebar = ({ onContactClick }) => {
     const [selectedConversationId, setSelectedConversationId] = useState(null);
@@ -69,8 +62,12 @@ const Sidebar = ({ onContactClick }) => {
     };
 
     return (
-        <Box>
-            <ProSidebar width={0.01}>
+        <Box sx={{
+            "@media only screen and (max-width:680px)":{
+                width: "100%"
+            }
+        }}>
+            <ProSidebar style={{width: "100%"}}>
                 <Menu>
                     {/* Topo do Sidebar */}
                     <MenuItem>
@@ -106,7 +103,13 @@ const Sidebar = ({ onContactClick }) => {
                         </Box>
                     </MenuItem>
                     {/* Wrap renderContacts() in a Box with overflowY set to auto and a height of 100vh */}
-                    <Box sx={{ overflowY: 'auto', height: '93vh' }}>
+                    <Box sx={{
+                        overflowY: 'auto',
+                        height: '93vh',
+                        "@media only screen and (max-width:680px)":{
+                            height: '80vh'
+                        }
+                    }}>
                         {renderContacts()}
                     </Box>
                 </Menu>
