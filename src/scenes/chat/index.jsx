@@ -1,80 +1,34 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Box, TextField, IconButton } from "@mui/material";
+import React, {useState, useRef} from "react";
+import {Box, TextField, IconButton, createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import Picker from "@emoji-mart/react";
 import default_background from "../../assets/background/default-background-black.png";
 import applyBackgroundOpacity from "../../utilities/applyBackgroundOpacity";
-import ChatRenderer from "./ChatRenderer";
+import EmojiPicker from 'emoji-picker-react';
 
-const Chat = ({ conversations }) => { // Destructure the 'conversations' prop correctly
+const Chat = ({conversations}) => {
     const [message, setMessage] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-    const textFieldRef = useRef(null);
+    const textFieldRef = useRef();
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm")); // Simple check for mobile screens
 
-    const handleSendMessage = () => {
-        console.log(`Sending message: ${message}`);
-        setMessage("");
+    const handleEmojiSelect = (emojiObject) => {
+        setMessage((prevMessage) => prevMessage + emojiObject.emoji);
     };
 
-    const handleKeyPress = (event) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            handleSendMessage();
-        }
-    };
-
-    const handleEmojiSelect = (emoji) => {
-        setMessage((prevMessage) => prevMessage + emoji.native);
-    };
-
-    const handleOutsideClick = (event) => {
-        if (
-            textFieldRef.current &&
-            !textFieldRef.current.contains(event.target) &&
-            !event.target.classList.contains("emoji-mart")
-        ) {
-            setShowEmojiPicker(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleOutsideClick);
-        return () => {
-            document.removeEventListener("mousedown", handleOutsideClick);
-        };
-    }, []);
-
-    const backgroundStyle = applyBackgroundOpacity(default_background, 0.8); // Set the desired opacity here
+    const theme = createTheme(); // Create an empty theme
 
     return (
-        <Box sx={backgroundStyle}>
-            {showEmojiPicker && (
-                <Picker
-                    onEmojiSelect={handleEmojiSelect}
-                    showPreview={false}
-                    showSkinTones={false}
-                    style={{ marginBottom: 16 }}
-                />
-            )}
-            <Box sx={{
-                height: "92%",
-                width: "100%"
-            }}>
-                <ChatRenderer conversations={conversations}/> {/* Pass the conversations prop correctly */}
-            </Box>
-            <Box
-                sx={{
+        <ThemeProvider theme={theme}>
+            <Box sx={applyBackgroundOpacity(default_background, 0.8)}>
+                <Box sx={{
                     display: "flex",
                     alignItems: "center",
                     backgroundColor: "#fff",
                     borderRadius: 3,
                     padding: 1,
-                    width: "80%",
-
-                    // Remove focus and other borders
+                    width: isMobile ? "100%" : "80%",
                     "& .MuiOutlinedInput-root": {
-                        borderRadius: 16,
                         "&.Mui-focused": {
                             boxShadow: "none",
                             "& .MuiOutlinedInput-notchedOutline": {
@@ -85,33 +39,36 @@ const Chat = ({ conversations }) => { // Destructure the 'conversations' prop co
                             borderColor: "transparent",
                         },
                         "&:hover": {
-                            // Add this new CSS rule to remove the border on hover
                             "& .MuiOutlinedInput-notchedOutline": {
                                 borderColor: "transparent",
                             },
                         },
                     },
-                }}
-            >
-                <IconButton onClick={() => setShowEmojiPicker((prevShow) => !prevShow)}>
-                    <InsertEmoticonIcon />
-                </IconButton>
-                <TextField
-                    value={message}
-                    onChange={(event) => setMessage(event.target.value)}
-                    placeholder="Message"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    multiline  // Allow multiline input
-                    onKeyPress={handleKeyPress} // Call handleKeyPress on key press
-                    ref={textFieldRef} // Assign the ref to the TextField
-                />
-                <IconButton onClick={handleSendMessage}>
-                    <SendIcon />
-                </IconButton>
+                }}>
+                    <IconButton onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                        <InsertEmoticonIcon/>
+                    </IconButton>
+                    {showEmojiPicker && (
+                        <Box sx={{position: 'absolute', bottom: 80}}>
+                            <EmojiPicker onEmojiClick={handleEmojiSelect}/>
+                        </Box>
+                    )}
+                    <TextField
+                        value={message}
+                        onChange={(event) => setMessage(event.target.value)}
+                        placeholder="Message"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        multiline
+                        inputRef={textFieldRef}
+                    />
+                    <IconButton>
+                        <SendIcon/>
+                    </IconButton>
+                </Box>
             </Box>
-        </Box>
+        </ThemeProvider>
     );
 };
 

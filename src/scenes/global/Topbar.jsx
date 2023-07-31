@@ -3,7 +3,7 @@ import {SearchOutlined} from "@mui/icons-material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PhoneIcon from '@mui/icons-material/Phone';
 import colors from "../../colors";
-import ContactAvatar from "../../utilities/ContactAvatar";
+import ContactAvatar from "../../utilities/contact/ContactAvatar";
 
 const Topbar = ({name, message, avatar, selectedContact}) => {
     if (!selectedContact) {

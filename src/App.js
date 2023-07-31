@@ -3,9 +3,10 @@ import { CssBaseline } from '@mui/material';
 import Topbar from './scenes/global/Topbar';
 import { Routes, Route } from 'react-router-dom';
 import Chat from './scenes/chat';
-import SideBar from './scenes/global/SideBar';
+import SideBar from './scenes/global/SidebarContext';
 import mockDataConversations from './data/MockDataConversations';
 import Home from "./scenes/home";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function App() {
     const [selectedContact, setSelectedContact] = useState(null);
@@ -41,52 +42,67 @@ function App() {
         setSelectedContact(contact);
     };
 
-    // Verifica se a largura da tela é menor que 680
-    const isMobile = windowWidth < 680;
+    // Create a custom theme with breakpoints
+    const theme = createTheme({
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 680,
+                md: 960,
+                lg: 1280,
+                xl: 1920,
+            },
+        },
+    });
+
+    // Verifies if the width of the screen is less than 680
+    const isMobile = windowWidth < theme.breakpoints.values.sm;
 
     return (
-        <CssBaseline>
-            <div className="app">
-                <main className="content" style={{ display: 'flex', flexDirection: 'row' }}>
-                    {isMobile ? (
-                        // Se for mobile e tiver um contato selecionado, exibe o Chat com a TopBar
-                        selectedContact ? (
-                            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                                <Topbar
-                                    name={selectedContact.name}
-                                    message={selectedContact.status}
-                                    avatar={selectedContact.avatar}
-                                    selectedContact={selectedContact}
-                                />
-                                <div className="chat-container" style={{ flexGrow: 1 }}>
-                                    <Chat conversations={selectedContact.conversation} />
+        <ThemeProvider theme={theme}>
+            <CssBaseline>
+                <div className="app">
+                    <main className="content" style={{ display: 'flex', flexDirection: 'row' }}>
+                        {isMobile ? (
+                            // If it's mobile and there is a selected contact, display Chat with TopBar
+                            selectedContact ? (
+                                <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <Topbar
+                                        name={selectedContact.name}
+                                        message={selectedContact.status}
+                                        avatar={selectedContact.avatar}
+                                        selectedContact={selectedContact}
+                                    />
+                                    <div className="chat-container" style={{ flexGrow: 1 }}>
+                                        <Chat conversations={selectedContact.conversation} />
+                                    </div>
                                 </div>
-                            </div>
-                        ) : <SideBar onContactClick={handleContactClick} />
-                    ) : (
-                        <>
-                            <SideBar onContactClick={handleContactClick} />
-                            <div style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-                                <Topbar
-                                    name={selectedContact?.name}
-                                    message={selectedContact?.status}
-                                    avatar={selectedContact?.avatar}
-                                    selectedContact={selectedContact} />
-                                <div className="chat-container" style={{ flexGrow: 1 }}>
-                                    <Routes>
-                                        {selectedContact ? (
-                                            <Route path="/" element={<Chat conversations={selectedContact.conversation} />} />
-                                        ) : (
-                                            <Route path="/" element={<Home />} />
-                                        )}
-                                    </Routes>
+                            ) : <SideBar onContactClick={handleContactClick} />
+                        ) : (
+                            <>
+                                <SideBar onContactClick={handleContactClick} />
+                                <div style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+                                    <Topbar
+                                        name={selectedContact?.name}
+                                        message={selectedContact?.status}
+                                        avatar={selectedContact?.avatar}
+                                        selectedContact={selectedContact} />
+                                    <div className="chat-container" style={{ flexGrow: 1 }}>
+                                        <Routes>
+                                            {selectedContact ? (
+                                                <Route path="/" element={<Chat conversations={selectedContact.conversation} />} />
+                                            ) : (
+                                                <Route path="/" element={<Home />} />
+                                            )}
+                                        </Routes>
+                                    </div>
                                 </div>
-                            </div>
-                        </>
-                    )}
-                </main>
-            </div>
-        </CssBaseline>
+                            </>
+                        )}
+                    </main>
+                </div>
+            </CssBaseline>
+        </ThemeProvider>
     );
 }
 
