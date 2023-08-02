@@ -31,27 +31,48 @@ const mockDataConversations = () => {
         return hash;
     };
 
+    const generateRandomStatus = (index, totalMessages) => {
+        if (index === totalMessages - 1) {
+            // Last message, status will be "viewed"
+            return "viewed";
+        } else if (index % 2 === 0) {
+            // Even-indexed messages, status will be "sending"
+            return "sending";
+        } else {
+            // Odd-indexed messages, status will be randomly "sent" or "received"
+            return Math.random() < 0.5 ? "sent" : "received";
+        }
+    };
+
+
+    const generateRandomConversation = () => {
+        const conversation = [];
+        const numMessages = generateRandomInt(5, 20); // Random number of messages in each conversation
+
+        for (let j = 0; j < numMessages; j++) {
+            const sender = j % 2 === 0 ? "user" : "other"; // Alternate between user and other as sender
+            const text = generateRandomMessage();
+            const timestamp = generateRandomDate();
+            const status = generateRandomStatus(j, numMessages); // Generate status based on the index and total messages
+
+            conversation.push({ text, sender, timestamp, status });
+        }
+
+        return conversation;
+    };
+
     const contacts = [];
 
     // Gerar conversas randômicas para cada contato
     for (let i = 0; i < 50; i++) {
         const name = `Contact ${i + 1}`;
-        const conversation = [];
-        const numMessages = generateRandomInt(5, 20); // Número de mensagens randômicas por contato
-
-        for (let j = 0; j < numMessages; j++) {
-            const sender = generateRandomBoolean() ? "user" : "other";
-            const text = generateRandomMessage();
-            const timestamp = generateRandomDate();
-
-            conversation.push({ text, sender, timestamp });
-        }
+        const conversation = generateRandomConversation();
 
         contacts.push({
             "conversationId": hashCode(name),
             "name": name,
-            "last message": conversation[numMessages - 1].text,
-            "last message date": conversation[numMessages - 1].timestamp,
+            "last message": conversation[conversation.length - 1].text,
+            "last message date": conversation[conversation.length - 1].timestamp,
             "avatar": null,
             "hasViewedConversation": generateRandomBoolean(),
             "unseenMessages": generateRandomInt(0, 10),

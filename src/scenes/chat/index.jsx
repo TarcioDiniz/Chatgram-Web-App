@@ -5,6 +5,7 @@ import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import default_background from "../../assets/background/default-background-black.png";
 import applyBackgroundOpacity from "../../utilities/applyBackgroundOpacity";
 import EmojiPicker from 'emoji-picker-react';
+import ChatRender from "./ChatRenderer";
 
 const Chat = ({conversations}) => {
     const [message, setMessage] = useState("");
@@ -21,6 +22,7 @@ const Chat = ({conversations}) => {
     return (
         <ThemeProvider theme={theme}>
             <Box sx={applyBackgroundOpacity(default_background, 0.8)}>
+                <ChatRender conversations={conversations}/>
                 <Box sx={{
                     display: "flex",
                     alignItems: "center",

@@ -1,77 +1,94 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import DoneIcon from "@mui/icons-material/Done";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-const FONT_SIZE_TEXT = "11px"
-const FONT_SIZE_DATA = "9px"
-const MAX_WIDTH = "60%"
+const FONT_SIZE_TEXT = "11px";
+const FONT_SIZE_DATA = "9px";
 
+const Message = ({ text, timestamp, sender, status }) => {
+    const isUser = sender === "user";
+    const alignItemsStyle = isUser ? "flex-end" : "flex-start";
+    const justifyContentStyle = isUser ? "flex-end" : "flex-start";
 
-const SentMessage = ({ text, timestamp }) => {
+    const getStatusIcon = () => {
+        if (status === "sent") {
+            return <DoneIcon style={{ fontSize: "14px", color: "#888" }} />;
+        } else if (status === "received") {
+            return <DoneAllIcon style={{ fontSize: "14px", color: "#4CAF50" }} />;
+        } else if (status === "viewed") {
+            return <DoneAllIcon style={{ fontSize: "14px", color: "#2196F3" }} />;
+        } else if (status === "sending") {
+            return <AccessTimeIcon sx={{ fontSize: "13px", color: "#888" }} />;
+        }
+        return null;
+    };
+
     return (
         <Box
             sx={{
-                backgroundColor: "#DCF8C6",
+                backgroundColor: isUser ? "#DCF8C6" : "#E7E7E7",
                 color: "#333",
-                borderRadius: "16px 16px 0 16px",
+                borderRadius: isUser ? "16px 16px 0 16px" : "16px 16px 16px 0",
                 padding: "8px 16px",
                 marginBottom: "8px",
-                maxWidth: MAX_WIDTH,
-                alignSelf: "flex-end", // Alinha à direita
-                wordWrap: "break-word", // Add word-wrap property to wrap long text
+                maxWidth: "80%",
+                wordWrap: "break-word",
                 fontSize: FONT_SIZE_TEXT,
+                alignSelf: alignItemsStyle,
+                display: "flex",
+                flexDirection: "column",
+            }}
+            style={{
+                wordBreak: "break-all",
+                wordWrap: "break-word",
+                overflowWrap: "break-word",
+                hyphens: "auto",
             }}
         >
-            <div>{text}</div>
-            <div style={{ fontSize: FONT_SIZE_DATA, color: "#888" }}>{timestamp}</div>
+            <div style={{ flex: 1 }}>{text}</div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: justifyContentStyle }}>
+                <div style={{ fontSize: FONT_SIZE_DATA, color: "#888" }}>{timestamp}</div>
+                <div style={{ marginLeft: "3px" }}>{getStatusIcon()}</div>
+            </div>
         </Box>
     );
 };
 
-const ReceivedMessage = ({ text, timestamp }) => {
-    return (
-        <Box
-            sx={{
-                backgroundColor: "#E7E7E7",
-                color: "#333",
-                borderRadius: "16px 16px 16px 0",
-                padding: "8px 16px",
-                marginBottom: "8px",
-                maxWidth: "60%",
-                alignSelf: "flex-start", // Alinha à esquerda
-                wordWrap: "break-word", // Add word-wrap property to wrap long text
-                fontSize: FONT_SIZE_TEXT,
-            }}
-        >
-            <div>{text}</div>
-            <div style={{ fontSize: FONT_SIZE_DATA, color: "#888" }}>{timestamp}</div>
-        </Box>
-    );
-};
-
+// Rest of the code remains the same...
 
 const ChatRenderer = ({ conversations }) => {
-    // Check if conversations is an array before using the map function
-    if (!Array.isArray(conversations)) {
-        // If conversations is not an array, you can render a fallback message or return null
+    if (!Array.isArray(conversations) || conversations.length === 0) {
         return (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                }}
+            >
                 No messages to display.
             </Box>
         );
     }
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", overflowY: "auto", height: "100%" }}>
-            {conversations.map((msg, index) => {
-                if (msg.sender === "user") {
-                    return <SentMessage key={index} text={msg.text} timestamp={msg.timestamp} />;
-                } else {
-                    return <ReceivedMessage key={index} text={msg.text} timestamp={msg.timestamp} />;
-                }
-            })}
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                overflowY: "auto",
+                height: "100%",
+                width: "100%",
+            }}
+        >
+            {conversations.map((msg, index) => (
+                <Message key={index} {...msg} />
+            ))}
         </Box>
     );
 };
-
 
 export default ChatRenderer;
