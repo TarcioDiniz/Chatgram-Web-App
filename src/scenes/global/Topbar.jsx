@@ -1,11 +1,12 @@
-import {Box, IconButton, Typography} from "@mui/material";
-import {SearchOutlined} from "@mui/icons-material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import PhoneIcon from '@mui/icons-material/Phone';
+import { Box, IconButton, Typography } from "@mui/material";
+import { SearchOutlined } from "@mui/icons-material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import PhoneIcon from "@mui/icons-material/Phone";
 import colors from "../../colors";
 import ContactAvatar from "../../utilities/contact/ContactAvatar";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const Topbar = ({name, message, avatar, selectedContact}) => {
+const Topbar = ({ name, message, avatar, selectedContact, onGoBack }) => {
     if (!selectedContact) {
         return null;
     }
@@ -16,26 +17,35 @@ const Topbar = ({name, message, avatar, selectedContact}) => {
             justifyContent="space-between"
             alignItems="center"
             p={0.5}
-            sx={
-                {
-                    background: "#fffff"
-                }
-            }>
+            sx={{
+                background: "#fffff",
+            }}
+        >
             {/* Left side */}
-            <Box display="flex" alignItems="center" sx={{marginLeft: 2}}>
+            <Box display="flex" alignItems="center">
+                {/* Back Icon */}
+                {onGoBack && (
+                    <Box marginLeft={2}>
+                        <IconButton onClick={onGoBack}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                    </Box>
+                )}
                 {/* Circular Avatar */}
-                {selectedContact && <ContactAvatar contact={selectedContact}/>}
-                <Box sx={{marginLeft: 2}}>
+                {selectedContact && (
+                    <Box marginLeft={2}>
+                        <ContactAvatar contact={selectedContact} />
+                    </Box>
+                )}
+                <Box sx={{ marginLeft: 2 }}>
                     {/* Name */}
-                    <Typography sx={{
-                        color: colors.white2[900]
-                    }} variant="subtitle1" fontWeight="bold">
+                    <Typography sx={{ color: colors.white2[900] }} variant="subtitle1" fontWeight="bold">
                         {name}
                     </Typography>
                     {/* Message */}
-                    <Typography sx={{
-                        color: colors.white1[700]
-                    }} variant="body2">{message}</Typography>
+                    <Typography sx={{ color: colors.white1[700] }} variant="body2">
+                        {message}
+                    </Typography>
                 </Box>
             </Box>
 
@@ -43,21 +53,21 @@ const Topbar = ({name, message, avatar, selectedContact}) => {
             <Box display="flex">
                 {/* Search Icon */}
                 <IconButton>
-                    <SearchOutlined/>
+                    <SearchOutlined />
                 </IconButton>
 
                 {/* Call (Phone) Icon */}
                 <IconButton>
-                    <PhoneIcon/>
+                    <PhoneIcon />
                 </IconButton>
 
                 {/* Vertical Three Dots Icon */}
                 <IconButton>
-                    <MoreVertIcon/>
+                    <MoreVertIcon />
                 </IconButton>
             </Box>
         </Box>
     );
-}
+};
 
 export default Topbar;

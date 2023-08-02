@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import Box from "@mui/material/Box";
 import DoneIcon from "@mui/icons-material/Done";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -59,6 +59,15 @@ const Message = ({ text, timestamp, sender, status }) => {
 // Rest of the code remains the same...
 
 const ChatRenderer = ({ conversations }) => {
+    const chatContainerRef = useRef(null);
+
+    useEffect(() => {
+        // Scroll to the bottom when the component is mounted or whenever the conversations change
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [conversations]);
+
     if (!Array.isArray(conversations) || conversations.length === 0) {
         return (
             <Box
@@ -83,6 +92,7 @@ const ChatRenderer = ({ conversations }) => {
                 height: "100%",
                 width: "100%",
             }}
+            ref={chatContainerRef} // Assign the ref to the container element
         >
             {conversations.map((msg, index) => (
                 <Message key={index} {...msg} />

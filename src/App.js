@@ -55,15 +55,29 @@ function App() {
         },
     });
 
-    // Verifies if the width of the screen is less than 680
-    const isMobile = windowWidth < theme.breakpoints.values.sm;
+    const simulateEscapeKeyPress = () => {
+        const escapeKeyEvent = new KeyboardEvent('keydown', {
+            key: 'Escape',
+        });
+        document.dispatchEvent(escapeKeyEvent);
+    }
+
+
+
+    const handleGoBack = () => {
+        // Verifica se é isMobile antes de realizar a ação
+        if (windowWidth < theme.breakpoints.values.sm) {
+            // aperta esc automatico
+            simulateEscapeKeyPress();
+        }
+    };
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline>
                 <div className="app">
                     <main className="content" style={{ display: 'flex', flexDirection: 'row' }}>
-                        {isMobile ? (
+                        {windowWidth < theme.breakpoints.values.sm ? (
                             // If it's mobile and there is a selected contact, display Chat with TopBar
                             selectedContact ? (
                                 <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -72,6 +86,7 @@ function App() {
                                         message={selectedContact.status}
                                         avatar={selectedContact.avatar}
                                         selectedContact={selectedContact}
+                                        onGoBack={handleGoBack} // Passa a função handleGoBack apenas para telas móveis
                                     />
                                     <div className="chat-container" style={{ flexGrow: 1 }}>
                                         <Chat conversations={selectedContact.conversation} />

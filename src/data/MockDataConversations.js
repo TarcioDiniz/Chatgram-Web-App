@@ -58,6 +58,9 @@ const mockDataConversations = () => {
             conversation.push({ text, sender, timestamp, status });
         }
 
+        // Sort conversation by timestamp in ascending order (oldest to newest)
+        conversation.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
         return conversation;
     };
 
