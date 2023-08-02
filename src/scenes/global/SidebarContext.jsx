@@ -10,8 +10,7 @@ import Contact from '../../utilities/contact/Contact';
 import AvatarWithBadge from '../../utilities/contact/AvatarWithBadge';
 
 const SidebarContext = ({onContactClick}) => {
-
-    const WIDTH_INTERACTABLE_SIDEBAR = "10vh"
+    const WIDTH_INTERACTABLE_SIDEBAR = '10vh';
 
     const [selectedConversationId, setSelectedConversationId] = useState(null);
     const [showAvatar, setShowAvatar] = useState(false);
@@ -47,17 +46,14 @@ const SidebarContext = ({onContactClick}) => {
         display: 'flex',
         backgroundColor: colors.white1[400],
         borderRadius: '40px',
+        width: '100%', // Update the width to 100%
         marginLeft: 1,
     };
-
 
     const sidebarStyles = {
         width: showAvatar ? WIDTH_INTERACTABLE_SIDEBAR : 'auto',
         '@media only screen and (max-width:680px)': {
             width: '100%',
-        },
-        '@media only screen and (max-width:1520px)': {
-            width: showAvatar ? "15vh" : 'auto',
         },
     };
 
@@ -78,10 +74,10 @@ const SidebarContext = ({onContactClick}) => {
             setShowAvatar(window.innerWidth < 1000 && window.innerWidth > 680);
         };
 
-        // Adiciona o evento resize
+        // Add resize event listener
         window.addEventListener('resize', handleResize);
 
-        // Remove o evento resize quando o componente é desmontado
+        // Remove resize event listener when the component is unmounted
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -93,16 +89,18 @@ const SidebarContext = ({onContactClick}) => {
                 <Menu>
                     <MenuItem>
                         <Box sx={{display: 'flex', alignItems: 'center'}}>
-                            <IconButton sx={{p: 1}} onClick={handleToggleAvatar}>
-                                <MenuOutlinedIcon/>
-                            </IconButton>
+                            {window.innerWidth >= 680 && (
+                                <IconButton sx={{p: 1,}} onClick={handleToggleAvatar}>
+                                    <MenuOutlinedIcon/>
+                                </IconButton>
+                            )}
                             {!showAvatar && (
                                 <Box sx={searchBoxStyles}>
                                     <InputBase
                                         sx={{
                                             ml: 2,
                                             flex: 1,
-                                            width: 200,
+                                            width: '100%', // Set the width to 100%
                                         }}
                                         placeholder="Search"
                                     />
@@ -114,13 +112,15 @@ const SidebarContext = ({onContactClick}) => {
                         </Box>
                     </MenuItem>
                     {showAvatar ? (
-                        <Box sx={{
-                            ...contactsContainerStyles,
-                            width: WIDTH_INTERACTABLE_SIDEBAR,
-                            '@media only screen and (max-width:1520px)': {
-                                width: showAvatar ? "15vh" : 'auto',
-                            },
-                        }}>
+                        <Box
+                            sx={{
+                                ...contactsContainerStyles,
+                                width: WIDTH_INTERACTABLE_SIDEBAR,
+                                '@media only screen and (max-width:1520px)': {
+                                    width: showAvatar ? '15vh' : 'auto',
+                                },
+                            }}
+                        >
                             {renderContactsAvatar()}
                         </Box>
                     ) : (
