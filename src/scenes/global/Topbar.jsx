@@ -6,7 +6,7 @@ import colors from "../../colors";
 import ContactAvatar from "../../utilities/contact/ContactAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const Topbar = ({ name, message, avatar, selectedContact, onGoBack }) => {
+const Topbar = ({ name, message, selectedContact, onGoBack }) => {
     if (!selectedContact) {
         return null;
     }

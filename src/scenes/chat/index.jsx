@@ -47,9 +47,11 @@ const Chat = ({conversations}) => {
                         },
                     },
                 }}>
-                    <IconButton onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-                        <InsertEmoticonIcon/>
-                    </IconButton>
+                    {isMobile? null: (
+                        <IconButton onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                            <InsertEmoticonIcon/>
+                        </IconButton>
+                    )}
                     {showEmojiPicker && (
                         <Box sx={{position: 'absolute', bottom: 80}}>
                             <EmojiPicker onEmojiClick={handleEmojiSelect}/>
