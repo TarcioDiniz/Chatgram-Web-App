@@ -12,7 +12,7 @@ const DesktopApp = ({ selectedContact, handleContactClick }) => {
                 {selectedContact ? (
                     <Route path="/" element={<ChatContainer selectedContact={selectedContact} isMobile={false} />} />
                 ) : (
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home style={{width: "100%"}} />} />
                 )}
             </Routes>
         </>
