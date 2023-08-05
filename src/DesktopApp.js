@@ -2,17 +2,20 @@ import React from 'react';
 import ChatContainer from './ChatContainer';
 import SideBar from './scenes/global/SidebarContext';
 import Home from './scenes/home';
-import { Routes, Route } from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 
-const DesktopApp = ({ selectedContact, handleContactClick }) => {
+const DesktopApp = ({selectedContact, handleContactClick, contactsList}) => {
     return (
         <>
-            <SideBar onContactClick={handleContactClick} />
+            <SideBar onContactClick={handleContactClick} contactsList={contactsList}/>
             <Routes>
                 {selectedContact ? (
-                    <Route path="/" element={<ChatContainer selectedContact={selectedContact} isMobile={false} />} />
+                    <Route
+                        path="/"
+                        element={<ChatContainer selectedContact={selectedContact} isMobile={false}/>}
+                    />
                 ) : (
-                    <Route path="/" element={<Home style={{width: "100%"}} />} />
+                    <Route path="/" element={<Home style={{width: '100%'}}/>}/>
                 )}
             </Routes>
         </>

@@ -1,14 +1,17 @@
 import React from 'react';
-import {Box, Badge} from '@mui/material';
+import { Box, Badge } from '@mui/material';
 import colors from '../../colors';
 import ContactAvatar from './ContactAvatar';
 
-const Contact = ({contact, selectedConversationId, onClick}) => {
-    const isSelectedContact = selectedConversationId === contact.conversationId;
+const Contact = ({ contact, selectedConversationId, onClick }) => {
+    const isSelectedContact = selectedConversationId === contact.getId();
+    const unseenMessages = contact.getConversation().countUnseenMessages();
+    const timestamp = contact.getConversation().getLastMessageTimestamp();
+    const lastMessage = contact.getConversation().getLastMessage()
 
     return (
         <Box
-            key={contact.conversationId}
+            key={contact.getId()}
             display="flex"
             alignItems="center"
             p={2}
@@ -19,16 +22,16 @@ const Contact = ({contact, selectedConversationId, onClick}) => {
                     backgroundColor: colors.white2[500],
                 },
             }}
-            onClick={() => onClick(contact.conversationId)}
+            onClick={() => onClick(contact.getId())}
         >
             {/* Avatar */}
-            <ContactAvatar contact={contact}/>
+            <ContactAvatar contact={contact} />
 
             {/* Contact Name and Last Message */}
-            <Box sx={{marginLeft: 2, display: 'flex', flexDirection: 'column'}}>
-                <div style={{fontWeight: 'bold'}}>{contact.name}</div>
-                <div style={{color: colors.white2[600]}}>
-                    {contact['last message'].substring(0, 15) + '...'}
+            <Box sx={{ marginLeft: 2, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ fontWeight: 'bold' }}>{contact.getName()}</div>
+                <div style={{ color: colors.white2[600] }}>
+                    {lastMessage ? lastMessage.TEXT.substring(0, 15) + '...' : null}
                 </div>
             </Box>
 
@@ -41,15 +44,18 @@ const Contact = ({contact, selectedConversationId, onClick}) => {
                     alignItems: 'flex-end',
                     fontSize: '12px',
                     textAlign: 'right',
-                    marginBottom: "20px",
+                    marginBottom: '20px',
                 }}
             >
-                <div>{contact['last message date']}</div>
+                <div>{timestamp}</div>
                 {/* Add Badge component to display the number of unseen messages */}
-                {!contact.hasViewedConversation && (
-                    <Badge sx={{marginTop: '20px', marginRight: '5px'}} badgeContent={contact.unseenMessages}
-                           color="success"/>
-                )}
+                {unseenMessages > 0 ? (
+                    <Badge
+                        sx={{ marginTop: '20px', marginRight: '5px' }}
+                        badgeContent={unseenMessages}
+                        color="success"
+                    />
+                ): null}
             </Box>
         </Box>
     );

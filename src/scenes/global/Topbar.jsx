@@ -6,10 +6,13 @@ import colors from "../../colors";
 import ContactAvatar from "../../utilities/contact/ContactAvatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const Topbar = ({ name, message, selectedContact, onGoBack }) => {
+const Topbar = ({ selectedContact, onGoBack }) => {
     if (!selectedContact) {
         return null;
     }
+
+    const name = selectedContact.getName();
+    const status = selectedContact.getStatus();
 
     return (
         <Box
@@ -32,19 +35,17 @@ const Topbar = ({ name, message, selectedContact, onGoBack }) => {
                     </Box>
                 )}
                 {/* Circular Avatar */}
-                {selectedContact && (
-                    <Box marginLeft={2}>
-                        <ContactAvatar contact={selectedContact} />
-                    </Box>
-                )}
+                <Box marginLeft={2}>
+                    <ContactAvatar contact={selectedContact} />
+                </Box>
                 <Box sx={{ marginLeft: 2 }}>
                     {/* Name */}
                     <Typography sx={{ color: colors.white2[900] }} variant="subtitle1" fontWeight="bold">
                         {name}
                     </Typography>
-                    {/* Message */}
+                    {/* Status */}
                     <Typography sx={{ color: colors.white1[700] }} variant="body2">
-                        {message}
+                        {status}
                     </Typography>
                 </Box>
             </Box>

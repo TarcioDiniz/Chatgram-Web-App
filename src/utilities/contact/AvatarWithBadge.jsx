@@ -4,12 +4,12 @@ import colors from '../../colors';
 import ContactAvatar from './ContactAvatar';
 
 const AvatarWithBadge = ({ contact, selectedConversationId, onClick }) => {
-    const isSelectedContact = selectedConversationId === contact.conversationId;
+    const isSelectedContact = selectedConversationId === contact.getId();
+    const unseenMessages = contact.getConversation().countUnseenMessages();
 
-    // The component returns the JSX that will be rendered
     return (
         <Box
-            key={contact.conversationId}
+            key={contact.getId()}
             display="flex"
             alignItems="center"
             p={2}
@@ -20,12 +20,11 @@ const AvatarWithBadge = ({ contact, selectedConversationId, onClick }) => {
                     backgroundColor: colors.white2[500],
                 },
             }}
-            onClick={() => onClick(contact.conversationId)}
+            onClick={() => onClick(contact.getId())}
         >
-
             {/* Add Badge component to display the number of unseen messages */}
-            {!contact.hasViewedConversation ? (
-                <Badge color="success" overlap="circular" badgeContent={contact.unseenMessages}>
+            {unseenMessages > 0 ? (
+                <Badge color="success" overlap="circular" badgeContent={unseenMessages}>
                     <ContactAvatar contact={contact} />
                 </Badge>
             ) : (

@@ -5,11 +5,10 @@ import { IconButton, Box } from '@mui/material';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import colors from '../../colors';
-import mockDataConversations from '../../data/MockDataConversations';
 import Contact from '../../utilities/contact/Contact';
 import AvatarWithBadge from '../../utilities/contact/AvatarWithBadge';
 
-const SidebarContext = ({ onContactClick }) => {
+const SidebarContext = ({ contactsList, onContactClick }) => {
     const WIDTH_INTERACTABLE_SIDEBAR = '10vh';
     const [selectedConversationId, setSelectedConversationId] = useState(null);
     const [showAvatar, setShowAvatar] = useState(window.innerWidth < 1000 && window.innerWidth > 680);
@@ -94,7 +93,7 @@ const SidebarContext = ({ onContactClick }) => {
                         </Box>
                     </MenuItem>
                     <Box sx={contactsContainerStyles}>
-                        {mockDataConversations.contatos.map((contact, index) =>
+                        {contactsList.map((contact, index) =>
                             showAvatar ? (
                                 <AvatarWithBadge
                                     key={index}

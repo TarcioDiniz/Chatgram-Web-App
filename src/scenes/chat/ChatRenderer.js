@@ -2,25 +2,28 @@ import React, {useEffect, useRef} from "react";
 import Box from "@mui/material/Box";
 import DoneIcon from "@mui/icons-material/Done";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const FONT_SIZE_TEXT = "11px";
 const FONT_SIZE_DATA = "9px";
 
-const Message = ({ text, timestamp, sender, status }) => {
+const Message = (props) => {
+    const { TEXT: text, SENDER: sender, TIMESTAMP: timestamp, STATUS: status } = props;
+
+
     const isUser = sender === "user";
     const alignItemsStyle = isUser ? "flex-end" : "flex-start";
     const justifyContentStyle = isUser ? "flex-end" : "flex-start";
 
     const getStatusIcon = () => {
         if (status === "sent") {
-            return <DoneIcon style={{ fontSize: "14px", color: "#888" }} />;
+            return <DoneIcon style={{fontSize: "14px", color: "#888"}}/>;
         } else if (status === "received") {
-            return <DoneAllIcon style={{ fontSize: "14px", color: "#4CAF50" }} />;
+            return <DoneAllIcon style={{fontSize: "14px", color: "#4CAF50"}}/>;
         } else if (status === "viewed") {
-            return <DoneAllIcon style={{ fontSize: "14px", color: "#2196F3" }} />;
+            return <DoneAllIcon style={{fontSize: "14px", color: "#2196F3"}}/>;
         } else if (status === "sending") {
-            return <AccessTimeIcon sx={{ fontSize: "13px", color: "#888" }} />;
+            return <AccessTimeIcon sx={{fontSize: "13px", color: "#888"}}/>;
         }
         return null;
     };
@@ -47,18 +50,16 @@ const Message = ({ text, timestamp, sender, status }) => {
                 hyphens: "auto",
             }}
         >
-            <div style={{ flex: 1 }}>{text}</div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: justifyContentStyle }}>
-                <div style={{ fontSize: FONT_SIZE_DATA, color: "#888" }}>{timestamp}</div>
-                <div style={{ marginLeft: "3px" }}>{getStatusIcon()}</div>
+            <div style={{flex: 1}}>{text}</div>
+            <div style={{display: "flex", alignItems: "center", justifyContent: justifyContentStyle}}>
+                <div style={{fontSize: FONT_SIZE_DATA, color: "#888"}}>{timestamp}</div>
+                <div style={{marginLeft: "3px"}}>{getStatusIcon()}</div>
             </div>
         </Box>
     );
 };
 
-// Rest of the code remains the same...
-
-const ChatRenderer = ({ conversations }) => {
+const ChatRenderer = ({conversations}) => {
     const chatContainerRef = useRef(null);
 
     useEffect(() => {
@@ -94,8 +95,9 @@ const ChatRenderer = ({ conversations }) => {
             }}
             ref={chatContainerRef} // Assign the ref to the container element
         >
-            {conversations.map((msg, index) => (
-                <Message key={index} {...msg} />
+            {conversations.map((message, index) => (
+                <Message key={index} {...message} />
+
             ))}
         </Box>
     );

@@ -1,44 +1,37 @@
-import { Message } from "./Message";
-
-export class Conversation {
-    private _messages: Message[];
-
-    constructor(messages: Message[]) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Conversation = void 0;
+class Conversation {
+    constructor(messages) {
         this._messages = messages;
     }
-
-    public get messages(): Message[] {
+    get messages() {
         return this._messages;
     }
-
-    public set messages(newMessages: Message[]) {
+    set messages(newMessages) {
         this._messages = this._messages.concat(newMessages);
     }
-
     // Method to get the last message
-    public getLastMessage(): Message | null {
+    getLastMessage() {
         return this._messages.length === 0 ? null : this._messages[this._messages.length - 1];
     }
-
     // Method to get the timestamp of the last message
-    public getLastMessageTimestamp(): string | null {
+    getLastMessageTimestamp() {
         const lastMessage = this.getLastMessage();
         return lastMessage ? lastMessage.getTimestamp() : null;
     }
-
     // Method to get the status of the last message
-    public getLastMessageStatus(): string | null {
+    getLastMessageStatus() {
         const lastMessage = this.getLastMessage();
         return lastMessage ? lastMessage.getStatus() : null;
     }
-
     // Method to count the number of unseen (privateViewed = false) messages
-    public countUnseenMessages(): number {
-        return this._messages.filter((message) => !message.isViewed() && message.getSender() !== "user").length;
+    countUnseenMessages() {
+        return this._messages.filter((message) => !message.isViewed()).length;
     }
-
     // Method to get all unseen (privateViewed = false) messages
-    public unseenMessages(): Message[] {
+    unseenMessages() {
         return this._messages.filter((message) => !message.isViewed());
     }
 }
+exports.Conversation = Conversation;
